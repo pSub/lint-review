@@ -63,8 +63,9 @@ def start_review():
     try:
         log.info("Scheduling pull request for %s/%s %s", user, repo, number)
         process_pull_request.delay(user, repo, number, lintrc)
-    except:
+    except Exception as e:
         log.error('Could not publish job to celery. Make sure its running.')
+        log.error("Error: %s" % str(e))
         return Response(status=500)
     return Response(status=204)
 
